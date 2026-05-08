@@ -52,6 +52,10 @@ html, body, #root {
   --radius-md: 10px;
   --radius-lg: 14px;
   --radius-xl: 20px;
+
+  /* SPACING */
+  --page-padding: 24px;
+  --card-padding: 20px;
 }
 
 * { box-sizing: border-box; }
@@ -65,71 +69,35 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  /* Smooth scrolling on mobile */
+  -webkit-overflow-scrolling: touch;
 }
 
-a {
-  color: inherit;
-}
+a { color: inherit; }
 
-img,
-video,
-canvas,
-svg {
-  max-width: 100%;
-}
+img, video, canvas, svg { max-width: 100%; }
 
-button,
-input,
-select,
-textarea {
+button, input, select, textarea {
   font: inherit;
   max-width: 100%;
 }
 
-/* SCROLLBAR */
+/* ── SCROLLBAR ─────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: var(--bg-primary); }
 ::-webkit-scrollbar-thumb { background: var(--bg-elevated); border-radius: 10px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--accent-cyan); }
 
-/* SELECTION */
+/* ── SELECTION ─────────────────────────────────────────── */
 ::selection { background: var(--accent-cyan); color: var(--bg-primary); }
 
-/* PULSE ANIMATION — for online/active status dots */
+/* ── ANIMATIONS ────────────────────────────────────────── */
 @keyframes pulse-dot {
   0%, 100% { opacity: 1; transform: scale(1); }
   50%       { opacity: 0.5; transform: scale(1.4); }
 }
 .pulse { animation: pulse-dot 1.8s ease-in-out infinite; }
 
-/* SMOOTH GLOBAL TRANSITIONS */
-*, *::before, *::after {
-  transition:
-    background-color 0.15s ease,
-    border-color     0.15s ease,
-    color            0.15s ease,
-    box-shadow       0.15s ease,
-    transform        0.1s ease;
-}
-
-/* CARD HOVER LIFT */
-.card-hover:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-card), var(--shadow-glow);
-  border-color: var(--border-hover);
-}
-
-/* BUTTON PRESS */
-button:active { transform: scale(0.97); }
-
-/* INPUT FOCUS GLOW */
-input:focus, select:focus, textarea:focus {
-  outline: none;
-  border-color: var(--accent-cyan);
-  box-shadow: 0 0 0 3px var(--accent-cyan-dim);
-}
-
-/* TERMINAL BLINK CURSOR — for training log */
 @keyframes blink {
   0%, 100% { opacity: 1; }
   50%       { opacity: 0; }
@@ -140,7 +108,43 @@ input:focus, select:focus, textarea:focus {
   color: var(--accent-cyan);
 }
 
-/* GLOBAL BUTTON STYLES */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fadeIn 0.35s ease both; }
+
+@keyframes shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position: 600px 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, #1A2535 0%, #243044 50%, #1A2535 100%);
+  background-size: 600px 100%;
+  animation: shimmer 1.4s infinite linear;
+  border-radius: var(--radius-md);
+}
+
+/* ── TRANSITIONS ───────────────────────────────────────── */
+*, *::before, *::after {
+  transition:
+    background-color 0.15s ease,
+    border-color     0.15s ease,
+    color            0.15s ease,
+    box-shadow       0.15s ease,
+    transform        0.1s ease;
+}
+
+/* ── CARD ──────────────────────────────────────────────── */
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card), var(--shadow-glow);
+  border-color: var(--border-hover);
+}
+
+/* ── BUTTONS ───────────────────────────────────────────── */
+button:active { transform: scale(0.97); }
+
 .btn {
   border-radius: var(--radius-sm);
   padding: 8px 16px;
@@ -152,27 +156,50 @@ input:focus, select:focus, textarea:focus {
   align-items: center;
   gap: 6px;
   transition: all 0.15s ease;
+  /* Mobile touch target */
+  min-height: 44px;
+  min-width: 44px;
 }
-.btn-primary   { background: var(--accent-cyan);      color: var(--bg-primary); }
+.btn-primary   { background: var(--accent-cyan); color: var(--bg-primary); }
 .btn-primary:hover   { filter: brightness(1.1); }
-.btn-primary:active  { transform: scale(0.97); }
 .btn-secondary { background: var(--bg-surface); color: var(--text-primary); border: 1px solid var(--border-default); }
 .btn-secondary:hover { border-color: var(--border-hover); }
-.btn-secondary:active { transform: scale(0.97); }
-.btn-danger    { background: var(--color-danger);     color: white; }
+.btn-danger    { background: var(--color-danger); color: white; }
 .btn-danger:hover    { filter: brightness(1.1); }
-.btn-danger:active   { transform: scale(0.97); }
-.btn-warning   { background: var(--color-warning);    color: white; }
-.btn-warning:hover   { filter: brightness(1.1); }
-.btn-warning:active  { transform: scale(0.97); }
-.btn-success   { background: var(--color-success);    color: white; }
-.btn-success:hover   { filter: brightness(1.1); }
-.btn-success:active  { transform: scale(0.97); }
+.btn-warning   { background: var(--color-warning); color: white; }
+.btn-success   { background: var(--color-success); color: white; }
 .btn-ghost     { background: transparent; color: var(--text-secondary); border: 1px solid var(--border-default); }
 .btn-ghost:hover     { color: var(--accent-cyan); border-color: var(--accent-cyan); }
-.btn-ghost:active    { transform: scale(0.97); }
 
-/* LIGHT THEME OVERRIDE */
+/* ── INPUTS ────────────────────────────────────────────── */
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 0 3px var(--accent-cyan-dim);
+}
+
+/* ── RESPONSIVE GRID UTILITIES ─────────────────────────── */
+.grid-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.grid-main {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+/* ── PAGE LAYOUT ───────────────────────────────────────── */
+.page-container {
+  padding: var(--page-padding);
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* ── LIGHT THEME OVERRIDE ──────────────────────────────── */
 [data-theme="light"] {
   --bg-page:        #F0F4F8;
   --bg-primary:     #FFFFFF;
@@ -187,14 +214,97 @@ input:focus, select:focus, textarea:focus {
   --shadow-card:    0 4px 24px rgba(0, 0, 0, 0.08);
 }
 
-@media (max-width: 1024px) {
-  body {
-    font-size: 13px;
+/* ══════════════════════════════════════════════════════════
+   RESPONSIVE BREAKPOINTS
+══════════════════════════════════════════════════════════ */
+
+/* ── Large Desktop ─────────────────────────────────────── */
+@media (max-width: 1280px) {
+  .grid-main {
+    grid-template-columns: 1fr 2fr;
   }
 }
 
+/* ── Tablet ────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  :root {
+    --page-padding: 16px;
+    --card-padding: 16px;
+  }
+  body { font-size: 13px; }
+
+  .grid-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .grid-main {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+/* ── Mobile ────────────────────────────────────────────── */
 @media (max-width: 768px) {
+  :root {
+    --page-padding: 12px;
+    --card-padding: 14px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+  }
+
   body {
     font-size: 13px;
+    /* Prevent zoom on input focus iOS */
+    -webkit-text-size-adjust: 100%;
+  }
+
+  .grid-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .grid-main {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  /* Smaller card padding on mobile */
+  .card-hover {
+    padding: var(--card-padding) !important;
+  }
+
+  /* Hide hover effects on touch devices */
+  .card-hover:hover {
+    transform: none;
+  }
+
+  /* Full width buttons on mobile */
+  .btn-mobile-full {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Better table scrolling on mobile */
+  .table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* ── Small Mobile ──────────────────────────────────────── */
+@media (max-width: 480px) {
+  :root {
+    --page-padding: 10px;
+    --card-padding: 12px;
+  }
+
+  .grid-cards {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  /* Smaller value text on very small screens */
+  .stat-value {
+    font-size: 24px !important;
   }
 }
